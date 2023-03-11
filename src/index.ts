@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 const app = express();
 
@@ -18,12 +19,13 @@ app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-const server = http.createServer(app);
+dotenv.config();
 
-server.listen(8080, () =>
-  console.log('Server running on http://localhost:8080/')
-);
-
-mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGO_URL);
-mongoose.connection.on('error', (error: Error) => console.log(error));
+const PORT = process.env.PORT || 9000;
+mongoose.set('strictQuery', true);
+mongoose
+  .connect(process.env.MONGO_URL, {})
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Running on: ${PORT}`));
+  })
+  .catch((error) => console.log(`${error} did not connect`));
