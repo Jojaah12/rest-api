@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import router from './router';
 
 const app = express();
 
@@ -29,3 +30,5 @@ mongoose
     app.listen(PORT, () => console.log(`Server Running on: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
+
+app.use('/', router());
