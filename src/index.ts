@@ -22,12 +22,16 @@ app.use(bodyParser.json());
 
 dotenv.config();
 
+const server = http.createServer(app);
+
 const PORT = process.env.PORT || 9000;
 mongoose.set('strictQuery', true);
 mongoose
   .connect(process.env.MONGO_URL, {})
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Running on: ${PORT}`));
+    server.listen(PORT, () =>
+      console.log(`Server Running on: ${PORT}`)
+    );
   })
   .catch((error) => console.log(`${error} did not connect`));
 
